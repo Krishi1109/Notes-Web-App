@@ -15,7 +15,7 @@ const MyNotes = () => {
   };
 
   const fetchNotes = async() => {
-    const {data} = await axios.get('/api/notes')
+    const {data} = await axios.get('http://localhost:5000/api/notes')
     setNotes(data)
   }
 

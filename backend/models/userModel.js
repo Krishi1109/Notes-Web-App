@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required : [true, "Name is Required"]
+    required: [true, "Name is Required"],
   },
   email: {
     type: String,
@@ -26,6 +26,20 @@ const userSchema = new mongoose.Schema({
       "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
   },
 });
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+userSchema.methods.matchPassword = async function(enteredPaassword) {
+    return await bcrypt.compare(enteredPaassword, this.password)
+}
+
 
 const User = mongoose.model("user", userSchema);
 
