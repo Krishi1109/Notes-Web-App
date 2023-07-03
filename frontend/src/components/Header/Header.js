@@ -7,9 +7,23 @@ import {
   Navbar,
   NavDropdown,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/userActions";
+
 
 const Header = () => {
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const {userInfo} = userLogin
+
+  const Logouthandler = () => {
+    dispatch(logout())
+    navigate("/")
+  };
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
@@ -51,7 +65,9 @@ const Header = () => {
                   </NavDropdown.Item>
 
                   <NavDropdown.Divider />
-                  <NavDropdown.Item>Logout</NavDropdown.Item>
+                  <NavDropdown.Item onClick={Logouthandler}>
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
               </>
 

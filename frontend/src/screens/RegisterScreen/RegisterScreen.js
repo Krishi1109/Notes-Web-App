@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import MainScreen from "../../components/MainScreen";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
+import { useDispatch, useSelector } from "react-redux";
+import {  register } from "../../actions/userActions";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
@@ -16,47 +17,56 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [picMessage, setPicMessage] = useState(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch()
+  const userRegister = useSelector((state) => state.userRegister)
+  const {loading, error, userInfo} = userRegister
+
+  useEffect(() => {
+    if(userInfo) {
+      navigate("/mynotes")
+    }
+ 
+  }, [userInfo, navigate])
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setMessage("Passwords Do Not Match");
+    if(password != confirmPassword) {
+      setMessage("Passwords do not match")
     } else {
-      setMessage(null);
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
+      dispatch(register(name, email, password, pic))
+    }
 
-        setLoading(true);
-        const {data} = await axios.post(
-          "http://localhost:5000/api/users",
-          {
-            name,
-            email,
-            password,
-            pic
-          },
-          config
-        );
-        console.log("DONEEE");
+  };
 
-        setLoading(false);
-        localStorage.setItem("userInfo", JSON.stringify(data));
-        // navigate("/mynotes");
-        setError(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-        setError(error.response.data.message);
-      }
+  const postDetails = (pics) => {
+    if (!pics) {
+      return setPicMessage("Please Select an image");
+    }
+    setPicMessage(null);
+    // https://api.cloudinary.com/v1_1/dyhjkutc6
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "Note-Zipper");
+      data.append("cloud_name", "dyhjkutc6");
+      fetch("https://api.cloudinary.com/v1_1/dyhjkutc6/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+        }).catch((err) => {
+          console.log(err)
+        })
+    } else {
+      return setPicMessage("Please Select an imageeee");
+
     }
   };
 
@@ -107,13 +117,13 @@ const RegisterScreen = () => {
             />
           </Form.Group>
 
-          {/* {picMessage && (
+          {picMessage && (
             <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
-          )} */}
+          )}
           <Form.Group controlId="pic">
             <Form.Label>Profile Picture</Form.Label>
             <Form.Control
-              // onChange={(e) => postDetails(e.target.files[0])}
+              onChange={(e) => postDetails(e.target.files[0])}
               // id="custom-file"
               type="file"
               label="Upload Profile Picture"
