@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const cors = require("cors")
 const notes = require("./data/notes");
 const userRoutes = require('./Routes/userRoutes')
+const noteRoutes = require('./Routes/noteRoutes')
+
 
 dotenv.config();
 const port = process.env.PORT;
@@ -27,11 +29,13 @@ app.get("/", (req, res) => {
   res.send("Done for the day");
 });
 
-app.get("/api/notes", (req, res) => {
-  res.send(notes);
-});
+// app.get("/api/notes", (req, res) => {
+//   res.send(notes);
+// });
 
 app.use('/api/users',userRoutes)
+app.use('/api/notes', noteRoutes)
+
 
 app.use(notFound)
 app.use(errorHandler)

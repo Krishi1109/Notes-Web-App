@@ -16,6 +16,7 @@ const userInfoFormStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
   
+  console.log(userInfoFormStorage)
 const initialState = { userLogin : {userInfo : userInfoFormStorage} };
 
 const middleware = [thunk];
