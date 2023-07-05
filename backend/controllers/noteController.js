@@ -19,7 +19,6 @@ const getNoteById = asyncHandler(async (req, res) => {
 const CreateNote = asyncHandler(async (req, res) => {
   const { title, content, category } = req.body;
 
-  console.log(req.user)
 
   if (!title || !content || !category) {
     res.status(400);

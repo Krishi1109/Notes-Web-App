@@ -6,17 +6,21 @@ import {
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
+import { noteCreateReducer, noteDeleteReducer, noteListReducer, noteUpdateReducer } from "./reducers/notesReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  noteList : noteListReducer,
+  noteCreate : noteCreateReducer,
+  noteUpdate : noteUpdateReducer,
+  noteDelete: noteDeleteReducer
 });
 
 const userInfoFormStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
   
-  console.log(userInfoFormStorage)
 const initialState = { userLogin : {userInfo : userInfoFormStorage} };
 
 const middleware = [thunk];
