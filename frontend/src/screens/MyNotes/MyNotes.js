@@ -60,8 +60,8 @@ const MyNotes = ({ search }) => {
         {notes &&
           notes
             ?.reverse()
-            .filter((filteredNote) => 
-              filteredNote.title.toLowerCase().includes(search.toLowerCase())
+            .filter((FilteredNote) => 
+              FilteredNote.title.toLowerCase().includes(search.toLowerCase())
             )
             .map((note) => (
               <Accordion key={note._id}>
