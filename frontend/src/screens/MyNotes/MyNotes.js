@@ -48,14 +48,14 @@ const MyNotes = ({ search }) => {
 
   return (
     <div>
-      <MainScreen title={`Welcome Back ${userInfo.data.name}`}>
+      <MainScreen title={`Welcome Back ${userInfo.name}`}>
         <Link to="/createnote">
           <Button>Create New Note</Button>
         </Link>
         {errorDelete && (
           <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
         )}
-        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+        {error && <ErrorMessage variant="info">{error}</ErrorMessage>}
         {loading && <Loading />}
         {notes &&
           notes

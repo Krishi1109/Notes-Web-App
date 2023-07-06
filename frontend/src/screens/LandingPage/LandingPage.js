@@ -4,27 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import "./LandingStyles.css";
 
 function LandingPage() {
-  // const userLogin = useSelector((state) => state.userLogin);
-  // const { userInfo } = userLogin;
 
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     history.push("/mynotes");
-  //   }
-  // }, [history, userInfo]);
-
-  // const [user, setUser] = useState("");
-
-  // const navigate = useNavigate();
-  // useEffect(() => {
-  //   console.log("Hello");
-  //   setUser(localStorage.getItem("userInfo"));
-  //   console.log("USERRRRR", user)
-  //   if (user) {
-  //     console.log("Result");
-  //     navigate("/mynotes");
-  //   }
-  // }, [navigate, user]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userInfo =localStorage.getItem("userInfo");
+    // console.log("USERRRRR", user)
+    if (userInfo) {
+      navigate("/mynotes");
+    }
+  }, [navigate]);
 
   return (
     <div className="main">

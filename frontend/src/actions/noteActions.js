@@ -23,14 +23,15 @@ export const listNotes = () => async (dispatch, getState) => {
     const { userLogin } = getState();
 
     const { userInfo } = userLogin;
-
+console.log(userInfo.token)
 
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.data.token}`,
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
     const { data } = await axios.get(`http://localhost:5000/api/notes`, config);
+    console.log("NOOOTTTEEE" , data)
     dispatch({
       type: NOTES_LIST_SUCCESS,
       payload: data.notes,
@@ -58,11 +59,10 @@ export const createNoteAction =
         userLogin: {userInfo}
       } = getState();
 
-
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.data.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
 
@@ -102,7 +102,7 @@ export const createNoteAction =
   
       const config = {
         headers: {
-          Authorization: `Bearer ${userInfo.data.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
   
@@ -140,7 +140,7 @@ export const createNoteAction =
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.data.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       };
   
