@@ -24,8 +24,8 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use("/api/users", userRoutes);
-app.use("/api/notes", noteRoutes);
+// app.use("/api/users", userRoutes);
+// app.use("/api/notes", noteRoutes);
 
 // ---------------- Deployment --------------------------
 __dirname = path.resolve();
