@@ -1,10 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const cors = require("cors")
-const notes = require("./data/notes");
-const userRoutes = require('./Routes/userRoutes')
-const noteRoutes = require('./Routes/noteRoutes')
-
+const cors = require("cors");
+const userRoutes = require("./Routes/userRoutes");
+const noteRoutes = require("./Routes/noteRoutes");
+const path = require("path");
 
 dotenv.config();
 const port = process.env.PORT;
@@ -19,26 +18,31 @@ connectDatabase();
 
 var corsOptions = {
   origin: "http://localhost:3000",
-  optionsSuccessStatus: 200, 
+  optionsSuccessStatus: 200,
   credentials: true,
 };
 
 app.use(cors(corsOptions));
 
-app.get("/", (req, res) => {
-  res.send("Done for the day");
-});
+app.use("/api/users", userRoutes);
+app.use("/api/notes", noteRoutes);
 
-// app.get("/api/notes", (req, res) => {
-//   res.send(notes);
-// });
+// ---------------- Deployment --------------------------
+// __dirname = path.resolve();
+// if (process.env.NODE_ENV == "production") {
+//   app.use(express.static(path.join(__dirname, "/frontend/build")));
+//   app.get('*', (req,res) => {
+//     res.sendFile(path.resolve(__dirname, "frontend", "build", 'index.html'))
+//   })
+// } else {
+//   app.get("/", (req, res) => {
+//     res.send("Done for the day");
+//   });
+// }
+// ---------------- Deployment --------------------------
 
-app.use('/api/users',userRoutes)
-app.use('/api/notes', noteRoutes)
-
-
-app.use(notFound)
-app.use(errorHandler)
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Connection is live on port number ${port}`);

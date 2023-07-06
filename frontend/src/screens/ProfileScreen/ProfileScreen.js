@@ -9,65 +9,65 @@ import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 
 const ProfileScreen = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [pic, setPic] = useState();
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [picMessage, setPicMessage] = useState();
-  
-    const navigate = useNavigate()
-    const dispatch = useDispatch();
-  
-    const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-  
-    const userUpdate = useSelector((state) => state.userUpdate);
-    const { loading, error, success } = userUpdate;
-  
-    useEffect(() => {
-      if (!userInfo) {
-        navigate("/");
-      } else {
-        setName(userInfo.name);
-        setEmail(userInfo.email);
-        setPic(userInfo.pic);
-      }
-    }, [navigate, userInfo]);
-  
-    const postDetails = (pics) => {
-      setPicMessage(null);
-      if (pics.type === "image/jpeg" || pics.type === "image/png") {
-        const data = new FormData();
-        data.append("file", pics);
-        data.append("upload_preset", "Note-Zipper");
-        data.append("cloud_name", "dyhjkutc6");
-        fetch("https://api.cloudinary.com/v1_1/dyhjkutc6/image/upload", {
-          method: "post",
-          body: data,
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [pic, setPic] = useState();
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [picMessage, setPicMessage] = useState();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const { loading, error, success } = userUpdate;
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/");
+    } else {
+      setName(userInfo.name);
+      setEmail(userInfo.email);
+      setPic(userInfo.pic);
+    }
+  }, [navigate, userInfo]);
+
+  const postDetails = (pics) => {
+    setPicMessage(null);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "Note-Zipper");
+      data.append("cloud_name", "dyhjkutc6");
+      fetch("https://api.cloudinary.com/v1_1/dyhjkutc6/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+          console.log("PICTURE ::: ", pic);
         })
-          .then((res) => res.json())
-          .then((data) => {
-            setPic(data.url.toString());
-            console.log("PICTURE ::: " , pic);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        return setPicMessage("Please Select an Image");
-      }
-    };
-  
-    const submitHandler = (e) => {
-      e.preventDefault();
-  
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return setPicMessage("Please Select an Image");
+    }
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (password == confirmPassword && password) {
       dispatch(updateProfile({ name, email, password, pic }));
-    };
-  
+    }
+  };
+
   return (
     <MainScreen title="EDIT PROFILE">
-        
       <div>
         <Row className="profileContainer">
           <Col md={6}>
@@ -145,7 +145,7 @@ const ProfileScreen = () => {
         </Row>
       </div>
     </MainScreen>
-  )
-}
+  );
+};
 
-export default ProfileScreen
+export default ProfileScreen;

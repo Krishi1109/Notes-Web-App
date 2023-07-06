@@ -12,24 +12,22 @@ import { useState } from "react";
 import ProfileScreen from "./screens/ProfileScreen/ProfileScreen";
 
 const App = () => {
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
   return (
     <BrowserRouter>
       <Header setSearch={setSearch} />
       <main>
         <Routes>
-
           <Route path="/" Component={LandingPage} />
 
           <Route path="/login" Component={LoginScreen} />
           <Route path="/register" Component={RegisterScreen} />
           <Route path="/profile" Component={ProfileScreen} />
-          
+
           <Route path="/createnote" Component={CreateNote} />
           <Route path="/note/:id" Component={SingleNote} />
 
           <Route path="/mynotes" element={<MyNotes search={search} />} />
-
         </Routes>
       </main>
       <Footer />
